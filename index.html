@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Message Sender</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+<div class="container">
+    <h1>Bot Message Sender</h1>
+
+    <!-- Bot Token Info -->
+    <div class="bot-token-info">
+        <i class="fas fa-info-circle"></i> Bot Token is pre-configured in the system.
+    </div>
+
+    <!-- Chat IDs Input -->
+    <label for="chat-ids">User Chat IDs:</label>
+    <textarea id="chat-ids" placeholder="Enter chat IDs, separated by commas or new lines">7437789145
+</textarea>
+
+    <!-- Custom Message Input -->
+    <label for="custom-message">Custom Message:</label>
+    <textarea id="custom-message" placeholder="Enter your custom message">🥳 ওয়ার্ক-রিপোর্ট 🥳 
+
+☘️ আপনার জমা দেওয়া 0 তারিখের 2FA-0FD-FACEBOOK আইডির রিপোর্ট এসেছে__
+
+☘️ আইডি রিসিভ: 
+🎉 উপার্জনের পরিমাণ: ৳
+
+আপনি চাইলে এখনই আপনার উপার্জন তুলতে পারেন। 
+
+Passkey:-
+Have a good day.
+Have a very good day.</textarea>
+
+    <!-- Message Formatting Tools -->
+    <div class="formatting-tools">
+        <button class="format-btn" data-format="bold" title="Bold"><b>B</b></button>
+        <button class="format-btn" data-format="italic" title="Italic"><i>I</i></button>
+        <button class="format-btn" data-format="link" title="Insert Link"><i class="fas fa-link"></i></button>
+        <button class="format-btn" data-format="code" title="Code"><code>&lt;/&gt;</code></button>
+        <button class="format-btn" data-format="clear" title="Clear Format">Clear</button>
+    </div>
+
+    <!-- Upload Image Option -->
+    <label for="upload-file">Upload Image (Optional):</label>
+    <div class="image-uploader">
+        <input type="file" id="fileInput" accept="image/*" hidden>
+        <label for="fileInput" class="upload-btn">Upload <i class="fa-solid fa-cloud-arrow-up"></i></label>
+        <div class="file-info" id="fileInfo">
+            <span id="fileName" class="file-name-text">No file chosen</span>
+            <div class="file-action-buttons">
+                <button id="previewBtn" class="preview-btn" hidden><i class="fa-sharp fa-solid fa-eye"></i></button>
+                <button id="remove-pr-Btn" class="close-btn" hidden><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup for Preview -->
+    <div id="previewPopup" class="ip-popup hidden">
+        <div class="popup-pr-content">
+            <span id="close-PR-Popup" class="close-PR-Popup"><i class="fa-solid fa-square-xmark"></i></span>
+            <img id="previewImage" src="" alt="Preview" />
+        </div>
+    </div>
+
+    <!-- Custom Button Option -->
+    <label for="custom-button">Custom Buttons (Optional):</label>
+    <textarea id="custom-button" placeholder="Example:
+Button 1 - https://link1.com + Button 2 - https://link2.com
+Button 3 - https://link3.com">Join Group - https://t.me/FbmMarket</textarea>
+    <div class="button-note">Note: Use + sign to separate buttons in same row</div>
+
+    <!-- Status Summary -->
+    <div class="status-summary">
+        <div class="summary-item">
+            <i class="fas fa-check-circle success-icon"></i>
+            <span>Successful:</span>
+            <span id="successCount" class="count">0</span>
+        </div>
+        <div class="summary-item">
+            <i class="fas fa-times-circle failed-icon"></i>
+            <span>Failed:</span>
+            <span id="failedCount" class="count">0</span>
+        </div>
+        <div class="summary-item">
+            <i class="fas fa-paper-plane total-icon"></i>
+            <span>Total:</span>
+            <span id="totalCount" class="count">0</span>
+        </div>
+    </div>
+
+    <!-- Status Output Grid -->
+    <div class="status-grid">
+        <div class="status-box success-box">
+            <div class="box-header">
+                <h3><i class="fas fa-check-circle"></i> Successful IDs</h3>
+                <button class="copy-box-btn" onclick="copySuccessIDs()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+            <div class="id-list" id="successList">
+                <div class="empty-message">No successful IDs yet</div>
+            </div>
+        </div>
+        
+        <div class="status-box failed-box">
+            <div class="box-header">
+                <h3><i class="fas fa-times-circle"></i> Failed IDs</h3>
+                <button class="copy-box-btn" onclick="copyFailedIDs()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+            <div class="id-list" id="failedList">
+                <div class="empty-message">No failed IDs yet</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OTP Section -->
+    <div class="otp-container">
+        <!-- Random OTP Display -->
+        <div id="otpDisplay" class="otp-display">OTP</div>
+
+        <!-- Copy Button -->
+        <button class="button copy" onclick="copyOTP()">Copy</button>
+
+        <!-- Custom OTP Button -->
+        <button id="customBtn" class="button custom" onclick="toggleCustomInput()">Custom</button>
+
+        <!-- Random Button -->
+        <button class="button random" onclick="generateRandomOTP()">Random</button>
+
+        <!-- Custom Input Box -->
+        <div class="input-box" id="customInputBox">
+            <input type="text" id="customOTP" placeholder="Enter custom OTP" onkeydown="setCustomOTP(event)">
+        </div>
+
+        <!-- Send Button -->
+        <button class="send-button" onclick="sendMessage()">Send Message</button>
+    </div>
+
+    <!-- Action Buttons Grid -->
+    <div class="action-grid">
+        <button class="action-btn save-btn" onclick="saveDraft()">
+            <i class="fas fa-save"></i> Save Draft
+        </button>
+        <button class="action-btn load-btn" onclick="loadDraft()">
+            <i class="fas fa-folder-open"></i> Load Draft
+        </button>
+        <button class="action-btn clear-btn" onclick="resetForm()">
+            <i class="fas fa-broom"></i> Clear All
+        </button>
+    </div>
+
+    <div id="customAlert" class="hidden">
+        <p id="alertMessage"></p>
+    </div>
+
+    <!-- Note Pade -->
+    <div class="note-container">
+        <button id="mainNoteBtn" class="main-btn">
+            <i class="fas fa-chart-bar" id="btnIcon"></i>
+        </button>
+        <div id="subButtons" class="sub-btns">
+            <button class="sub-btn" data-embed-src="sub-note/file-recived.html">
+                <i class="fa-solid fa-file-xls"></i>File Recived
+            </button>
+            <button class="sub-btn" data-embed-src="sub-note/payment-note.html">
+                <i class="fas fa-credit-card"></i> Payment Note
+            </button>
+            <button class="sub-btn" data-embed-src="sub-note/file-report.html">
+                <i class="fas fa-chart-bar"></i> Report Note
+            </button>
+        </div>
+    </div>
+
+    <!-- Embedded Page Modal -->
+    <div id="embedModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="p-close-btn"><i class="fa-solid fa-circle-xmark fa-shake"></i></span>
+            <iframe id="embeddedFrame" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
