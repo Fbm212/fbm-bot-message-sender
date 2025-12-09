@@ -40,8 +40,12 @@ Have a very good day.</textarea>
     <div class="formatting-tools">
         <button class="format-btn" data-format="bold" title="Bold"><b>B</b></button>
         <button class="format-btn" data-format="italic" title="Italic"><i>I</i></button>
-        <button class="format-btn" data-format="link" title="Insert Link"><i class="fas fa-link"></i></button>
-        <button class="format-btn" data-format="code" title="Code"><code>&lt;/&gt;</code></button>
+        <button class="format-btn" data-format="mono" title="Mono"><code>M</code></button>
+        <button class="format-btn" data-format="quote" title="Quote"><i class="fas fa-quote-right"></i></button>
+        <button class="format-btn" data-format="spoiler" title="Spoiler"><i class="fas fa-eye-slash"></i></button>
+        <button class="format-btn" data-format="strikethrough" title="Strikethrough"><s>S</s></button>
+        <button class="format-btn" data-format="underline" title="Underline"><u>U</u></button>
+        <button class="format-btn" data-format="link" title="Create Link"><i class="fas fa-link"></i></button>
         <button class="format-btn" data-format="clear" title="Clear Format">Clear</button>
     </div>
 
@@ -74,48 +78,60 @@ Button 1 - https://link1.com + Button 2 - https://link2.com
 Button 3 - https://link3.com">Join Group - https://t.me/FbmMarket</textarea>
     <div class="button-note">Note: Use + sign to separate buttons in same row</div>
 
-    <!-- Status Summary -->
-    <div class="status-summary">
-        <div class="summary-item">
-            <i class="fas fa-check-circle success-icon"></i>
-            <span>Successful:</span>
-            <span id="successCount" class="count">0</span>
-        </div>
-        <div class="summary-item">
-            <i class="fas fa-times-circle failed-icon"></i>
-            <span>Failed:</span>
-            <span id="failedCount" class="count">0</span>
-        </div>
-        <div class="summary-item">
-            <i class="fas fa-paper-plane total-icon"></i>
-            <span>Total:</span>
-            <span id="totalCount" class="count">0</span>
-        </div>
-    </div>
-
-    <!-- Status Output Grid -->
-    <div class="status-grid">
-        <div class="status-box success-box">
-            <div class="box-header">
-                <h3><i class="fas fa-check-circle"></i> Successful IDs</h3>
-                <button class="copy-box-btn" onclick="copySuccessIDs()">
-                    <i class="fas fa-copy"></i> Copy
-                </button>
-            </div>
-            <div class="id-list" id="successList">
-                <div class="empty-message">No successful IDs yet</div>
-            </div>
+    <!-- Status Section with Toggle -->
+    <div class="status-section">
+        <div class="status-header">
+            <h3><i class="fas fa-chart-line"></i> Sending Status</h3>
+            <button id="toggleStatusBtn" class="toggle-status-btn" onclick="toggleStatusSection()">
+                <i class="fas fa-eye-slash"></i> Hide
+            </button>
         </div>
         
-        <div class="status-box failed-box">
-            <div class="box-header">
-                <h3><i class="fas fa-times-circle"></i> Failed IDs</h3>
-                <button class="copy-box-btn" onclick="copyFailedIDs()">
-                    <i class="fas fa-copy"></i> Copy
-                </button>
+        <div class="status-content" id="statusContent">
+            <!-- Status Summary -->
+            <div class="status-summary">
+                <div class="summary-item">
+                    <i class="fas fa-check-circle success-icon"></i>
+                    <span>Successful:</span>
+                    <span id="successCount" class="count">0</span>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-times-circle failed-icon"></i>
+                    <span>Failed:</span>
+                    <span id="failedCount" class="count">0</span>
+                </div>
+                <div class="summary-item">
+                    <i class="fas fa-paper-plane total-icon"></i>
+                    <span>Total:</span>
+                    <span id="totalCount" class="count">0</span>
+                </div>
             </div>
-            <div class="id-list" id="failedList">
-                <div class="empty-message">No failed IDs yet</div>
+
+            <!-- Status Output Grid -->
+            <div class="status-grid">
+                <div class="status-box success-box">
+                    <div class="box-header">
+                        <h3><i class="fas fa-check-circle"></i> Successful IDs</h3>
+                        <button class="copy-box-btn" onclick="copySuccessIDs()">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="id-list" id="successList">
+                        <div class="empty-message">No successful IDs yet</div>
+                    </div>
+                </div>
+                
+                <div class="status-box failed-box">
+                    <div class="box-header">
+                        <h3><i class="fas fa-times-circle"></i> Failed IDs</h3>
+                        <button class="copy-box-btn" onclick="copyFailedIDs()">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="id-list" id="failedList">
+                        <div class="empty-message">No failed IDs yet</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
