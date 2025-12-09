@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সুন্দর নোট ডিজাইন</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<style>
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+    padding: 5px;
+}
+
+/*.container {
+    width: 100%;
+    max-width: 600px;
+}*/
+
+.note-card {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    position: relative;
+    overflow: hidden;
+    border-left: 5px solid #4a6cf7;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.note-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.note-header h3 {
+    color: #343a40;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.copy-btn {
+    background-color: #4a6cf7;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+    background-color: #3a5ce4;
+    transform: scale(1.1);
+}
+
+.copy-btn i {
+    font-size: 1rem;
+}
+
+.note-content {
+    color: #495057;
+    line-height: 1.6;
+}
+
+.note-content p {
+    margin-bottom: 10px;
+    padding-left: 15px;
+    position: relative;
+}
+
+.note-content p::before {
+    content: "•";
+    color: #4a6cf7;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.copy-message {
+    position: absolute;
+    top: 20px;
+    right: -100px;
+    background-color: #28a745;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.copy-message.show {
+    right: 20px;
+    opacity: 1;
+}
+
+/*@media (max-width: 600px) {
+    .note-header h3 {
+        font-size: 1.3rem;
+    }
+    
+    .note-content {
+        font-size: 0.95rem;
+    }
+} */
+  
+</style>
+<body>
+    <div class="container">
+        <div class="note-card">
+            <div class="note-header">
+                <h3>আমার গুরুত্বপূর্ণ নোট</h3>
+                <button id="copyBtn" class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+            <div class="note-content" id="noteContent">
+                <p>🥳 ওয়ার্ক-রিপোর্ট 🥳 
+</br></br>
+☘️ আপনার জমা দেওয়া 0 তারিখের 2FA-0FA-FACEBOOK এর রিপোর্ট এসেছে__
+</br></br>
+☘️ আইডি রিসিভ: </br>
+🎉 উপার্জনের পরিমাণ: ৳
+</br></br>
+আপনি চাইলে এখনই আপনার উপার্জন তুলতে পারেন।
+</br></br>
+Passkey:- </br>
+Have a good day.</br>
+Have a very good day.</p>
+            </div>
+            <div class="copy-message" id="copyMessage">কপি হয়েছে!</div>
+        </div>
+    </div>
+
+    <script>
+      
+      
+      document.addEventListener('DOMContentLoaded', function() {
+    const copyBtn = document.getElementById('copyBtn');
+    const noteContent = document.getElementById('noteContent');
+    const copyMessage = document.getElementById('copyMessage');
+
+    copyBtn.addEventListener('click', function() {
+        // Create a range and select the note content
+        const range = document.createRange();
+        range.selectNode(noteContent);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        
+        // Copy the selected text
+        document.execCommand('copy');
+        
+        // Deselect the text
+        window.getSelection().removeAllRanges();
+        
+        // Show copy confirmation message
+        copyMessage.classList.add('show');
+        
+        // Hide the message after 2 seconds
+        setTimeout(function() {
+            copyMessage.classList.remove('show');
+        }, 2000);
+        
+        // Button animation
+        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+        copyBtn.style.backgroundColor = '#28a745';
+        
+        setTimeout(function() {
+            copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+            copyBtn.style.backgroundColor = '#4a6cf7';
+        }, 2000);
+    });
+});
+      
+      
+    </script>
+</body>
+</html>
