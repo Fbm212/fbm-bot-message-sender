@@ -1,7 +1,7 @@
 // ================================
 // BOT CONFIGURATION
 // ================================
-const BOT_TOKEN = "7734169736:AAGDFW2mVkNSLrrPClDohEfNE0whlwmBiuE";
+const BOT_TOKEN = "7673657711:AAG9aHlpI8_Egvwi0fY9rxA4qyEfqOw16nU";
 
 // ================================
 // LOCAL STORAGE KEYS
@@ -20,6 +20,7 @@ let isSending = false;
 let successIDs = [];
 let failedIDs = [];
 let totalIDsCount = 0;
+let isStatusVisible = false; // Initially hidden
 
 // ================================
 // INITIALIZATION
@@ -36,6 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize status counters
     updateStatusCounters();
+    
+    // Initially hide status section
+    hideStatusSection();
 });
 
 // ================================
@@ -81,18 +85,22 @@ function setupFileUpload() {
                 previewBtn.hidden = false;
                 removeBtn.hidden = false;
                 
-                const fileReader = new FileReader();
-                fileReader.onload = function() {
-                    previewImage.src = fileReader.result;
-                };
-                fileReader.readAsDataURL(file);
+                // NO AUTO PREVIEW - Only when preview button is clicked
             }
         });
     }
     
     if (previewBtn) {
         previewBtn.addEventListener('click', function() {
-            previewPopup.classList.remove('hidden');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fileReader = new FileReader();
+                fileReader.onload = function() {
+                    previewImage.src = fileReader.result;
+                };
+                fileReader.readAsDataURL(file);
+                previewPopup.classList.remove('hidden');
+            }
         });
     }
     
@@ -161,6 +169,26 @@ function handleFormatting(formatType) {
             formattedText = `_${selectedText}_`;
             newCursorPos = start + 1 + selectedText.length;
             break;
+        case 'mono':
+            formattedText = `\`${selectedText}\``;
+            newCursorPos = start + 1 + selectedText.length;
+            break;
+        case 'quote':
+            formattedText = `> ${selectedText}`;
+            newCursorPos = start + 2 + selectedText.length;
+            break;
+        case 'spoiler':
+            formattedText = `||${selectedText}||`;
+            newCursorPos = start + 2 + selectedText.length;
+            break;
+        case 'strikethrough':
+            formattedText = `~${selectedText}~`;
+            newCursorPos = start + 1 + selectedText.length;
+            break;
+        case 'underline':
+            formattedText = `__${selectedText}__`;
+            newCursorPos = start + 2 + selectedText.length;
+            break;
         case 'link':
             const url = prompt('Enter URL:', 'https://');
             if (url) {
@@ -171,20 +199,20 @@ function handleFormatting(formatType) {
                 return;
             }
             break;
-        case 'code':
-            formattedText = `\`${selectedText}\``;
-            newCursorPos = start + 1 + selectedText.length;
-            break;
         case 'clear':
-            // Remove formatting
+            // Remove all formatting
             formattedText = selectedText
                 .replace(/\*\*/g, '')
                 .replace(/_/g, '')
+                .replace(/`/g, '')
+                .replace(/^>\s*/gm, '')
+                .replace(/\|\|/g, '')
+                .replace(/~/g, '')
+                .replace(/__/g, '')
                 .replace(/\[.*?\]\(.*?\)/g, (match) => {
                     const textMatch = match.match(/\[(.*?)\]/);
                     return textMatch ? textMatch[1] : match;
-                })
-                .replace(/`/g, '');
+                });
             newCursorPos = start + formattedText.length;
             break;
         default:
@@ -247,6 +275,9 @@ async function sendMessage() {
     resetSendingStatus();
     totalIDsCount = chatIdArray.length;
     updateStatusCounters();
+    
+    // Show status section when sending starts
+    showStatusSection();
     
     // Start sending
     isSending = true;
@@ -317,6 +348,10 @@ async function sendSingleMessage(chatId, customMessage, uploadFile, customButton
             .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
             .replace(/_(.*?)_/g, '<i>$1</i>')
             .replace(/`(.*?)`/g, '<code>$1</code>')
+            .replace(/^>\s*(.*?)$/gm, '<blockquote>$1</blockquote>')
+            .replace(/\|\|(.*?)\|\|/g, '<tg-spoiler>$1</tg-spoiler>')
+            .replace(/~(.*?)~/g, '<s>$1</s>')
+            .replace(/__(.*?)__/g, '<u>$1</u>')
             .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>');
         
         if (uploadFile) {
@@ -363,6 +398,41 @@ async function sendSingleMessage(chatId, customMessage, uploadFile, customButton
     } catch (error) {
         console.error("Error sending message to", chatId, ":", error);
         return false;
+    }
+}
+
+// ================================
+// STATUS SECTION TOGGLE
+// ================================
+function toggleStatusSection() {
+    const statusContent = document.getElementById('statusContent');
+    const toggleBtn = document.getElementById('toggleStatusBtn');
+    const icon = toggleBtn.querySelector('i');
+    
+    if (isStatusVisible) {
+        hideStatusSection();
+        toggleBtn.innerHTML = '<i class="fas fa-eye"></i> Show';
+        isStatusVisible = false;
+    } else {
+        showStatusSection();
+        toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide';
+        isStatusVisible = true;
+    }
+}
+
+function showStatusSection() {
+    const statusContent = document.getElementById('statusContent');
+    if (statusContent) {
+        statusContent.style.display = 'block';
+        isStatusVisible = true;
+    }
+}
+
+function hideStatusSection() {
+    const statusContent = document.getElementById('statusContent');
+    if (statusContent) {
+        statusContent.style.display = 'none';
+        isStatusVisible = false;
     }
 }
 
@@ -706,3 +776,4 @@ window.saveDraft = saveDraft;
 window.loadDraft = loadDraft;
 window.copySuccessIDs = copySuccessIDs;
 window.copyFailedIDs = copyFailedIDs;
+window.toggleStatusSection = toggleStatusSection;
