@@ -1,0 +1,34 @@
+/* File Name Text - UPDATED WITH hidden overflow */
+.file-name-text {
+    font-size: 14px;
+    color: #333;
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden; /* Changed from ellipsis to hidden */
+    text-overflow: clip; /* Changed from ellipsis to clip */
+    max-width: 100%;
+    min-width: 100px;
+    padding: 8px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .file-name-text {
+        overflow: hidden;
+        text-overflow: clip;
+    }
+}
+
+@media (max-width: 480px) {
+    .file-name-text {
+        overflow: hidden;
+        text-overflow: clip;
+    }
+}
+
+@media (max-width: 360px) {
+    .file-name-text {
+        overflow: hidden;
+        text-overflow: clip;
+    }
+}
