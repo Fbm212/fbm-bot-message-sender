@@ -392,16 +392,20 @@ input:focus, textarea:focus, select:focus {
 
 /* Status Grid - Two Column Layout */
 .status-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    display: flex;
+    gap: 15px;
+    margin: 15px 0;
+    flex-wrap: nowrap;
+    overflow: hidden;
 }
 
 .status-box {
-    border-radius: 10px;
+    flex: 1;
+    min-width: 0; /* Important for responsive */
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    height: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    height: 280px;
     display: flex;
     flex-direction: column;
     border: 2px solid;
@@ -413,6 +417,74 @@ input:focus, textarea:focus, select:focus {
 
 .failed-box {
     border-color: #f44336;
+}
+
+/* Responsive adjustments to keep boxes side by side */
+@media (max-width: 768px) {
+    .status-grid {
+        gap: 10px;
+    }
+    
+    .status-box {
+        height: 250px;
+        min-width: 150px; /* Minimum width */
+    }
+    
+    .box-header h3 {
+        font-size: 14px;
+    }
+    
+    .copy-box-btn {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    
+    .id-item {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .status-box {
+        height: 230px;
+        min-width: 130px;
+    }
+    
+    .box-header {
+        padding: 10px;
+    }
+    
+    .box-header h3 {
+        font-size: 13px;
+    }
+    
+    .id-item {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+    
+    .copy-box-btn {
+        padding: 3px 6px;
+        font-size: 11px;
+    }
+}
+
+/* Extreme small screens - still side by side */
+@media (max-width: 360px) {
+    .status-box {
+        height: 200px;
+        min-width: 120px;
+    }
+    
+    .id-list {
+        padding: 10px;
+    }
+    
+    .id-item {
+        padding: 5px 7px;
+        font-size: 11px;
+    }
 }
 
 .box-header {
