@@ -1,7 +1,7 @@
 // ================================
 // BOT CONFIGURATION
 // ================================
-const BOT_TOKEN = "7673657711:AAG9aHlpI8_Egvwi0fY9rxA4qyEfqOw16nU";
+const BOT_TOKEN = "8377520270:AAHL1MrNxIwgrRQAk_lDWJrEs78wu76Dnh0";
 
 // ================================
 // LOCAL STORAGE KEYS
